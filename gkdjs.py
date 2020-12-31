@@ -8,7 +8,10 @@ import os
 import ctypes
 import urllib.request
 import os.path
+import sys
 
+la = "https://area.sinaapp.com/bingImg/"
+lb =
 
 def save_img(img_url,dirname):
     #保存图片到磁盘文件夹dirname中
@@ -41,8 +44,10 @@ def set_img_as_wallpaper(filepath):
     ctypes.windll.user32.SystemParametersInfoW(20, 0, filepath, 0)
 
 print("Designed By Wenjia Chen Copyright 2012 -2020")
-print("Visit NEZHA.SPACE Opensource on Github @wenjia03")
+print("Visit NEZHA.SPACE")
 print("Opensource on Github @wenjia03")
+print('WenjiaChen&Nezha.space 版权所有 翻版必究')
+print('遵循麻省理工大学MIT协议对本程序基本源代码进行开源。开源社区万岁!')
 print('正在请求必应每日一图……')
 dirname = "D:\\"       # 图片要被保存在的位置
 img_url = get_img_url()
@@ -50,7 +55,7 @@ filepath = save_img(img_url, dirname)   # 图片文件的的路径
 set_img_as_wallpaper(filepath)
 apploc ='D:'
 now = time.time()
-endunix = 1623081600
+endunix = 1622995200
 re =  int((endunix -int(now) )/86400) + 1
 
 headers = {
@@ -60,7 +65,7 @@ print(str(apploc) + "\\in.jpg")
 print("正在准备请求Hitokoto API……")
 bk_img = cv2.imread(str(apploc) + "\\in.jpg")
 #设置需要显示的字体
-fontpath = "ziti.ttf"
+fontpath = "D:\\ziti.ttf"
 font = ImageFont.truetype(fontpath, 48)
 font3 = ImageFont.truetype(fontpath, 40)
 font2 = ImageFont.truetype(fontpath,112)
@@ -72,6 +77,9 @@ print("正在生成图片……")
 rep = rre.json()
 text = rep['hitokoto']
 info ="——《"+str(rep['from'])+"》  " +str(rep['from_who'])
+if re <= 5:
+    text = '春风得意马蹄疾，一日看尽长安花。'
+    info = '——《登科后》 孟郊'
 #绘制文字信息
 draw.text((850 , 350),  "距离高考还有", font = font, fill = (255, 255, 255))
 draw.text((850 , 400),  str(re) + "天", font = font2, fill = '#0000ff')
