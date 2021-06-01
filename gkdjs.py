@@ -32,21 +32,53 @@ def save_img(img_url,dirname):
     print("Save", filepath, "successfully!")
 
     return filepath
-
+def unix_time(dt):
+    #转换成时间数组
+    timeArray = time.strptime(dt, "%Y-%m-%d %H:%M:%S")
+    #转换成时间戳
+    timestamp = time.mktime(timeArray)
+    return timestamp
 # 请求网页，跳转到最终 img 地址
 def get_img_url(raw_img_url = "https://area.sinaapp.com/bingImg/"):
-    r = requests.get(raw_img_url)       
-    img_url = r.url # 得到图片文件的网址
-    print('img_url:', img_url)
-    return img_url
+    try:
+        print('正在使用新浪-必应每日一图源')
+        r = requests.get(raw_img_url,timeout= 30)       
+        img_url = r.url # 得到图片文件的网址
+        print('img_url:', img_url)
+        return img_url
+    except:
+        print('源站出现错误或者没有网络，正在切换备用图源……')
+        print('正在使用XY笔记-必应每日一图源')
+        print('感谢源站xygeng.cn')
+        raw_img_url = 'https://api.xygeng.cn/Bing/'
+        r = requests.get(raw_img_url,timeout= 30)       
+        img_url = r.url # 得到图片文件的网址
+        print('img_url:', img_url)
+        return img_url
+
+
 def set_img_as_wallpaper(filepath):
     ctypes.windll.user32.SystemParametersInfoW(20, 0, filepath, 0)
+def leap_year(year):
+    year = int(year)
+    if (year % 4) == 0:
+        if (year % 100) == 0:
+            if (year % 400) == 0:
+               return 1# 整百年能被400整除的是闰年
+            else:
+               return 0
+        else:
+            return 1       # 非整百年能被4整除的为闰年
+    else:
+        return 0
 print(len(sys.argv))
 print("Designed By Wenjia Chen Copyright 2012 -2020")
 print("Visit NEZHA.SPACE")
+print('冷水江市第六中学1806班 开发制作')
 print("Opensource on Github @wenjia03")
-print('WenjiaChen&Nezha.space 版权所有 翻版必究')
-print('遵循麻省理工大学MIT协议对本程序基本源代码进行开源。开源社区万岁!')
+print('https://github.com/wenjia03/Highgrade-Test-Countdown-timer')
+print('WenjiaChen @Nezha.space 版权所有')
+print('遵循 GPL-V3.0 协议对本程序基本源代码进行开源。')
 print('正在请求必应每日一图……')
 dirname = "D:\\"       # 图片要被保存在的位置
 img_url = get_img_url()
@@ -54,8 +86,19 @@ filepath = save_img(img_url, dirname)   # 图片文件的的路径
 set_img_as_wallpaper(filepath)
 apploc ='D:'
 now = time.time()
-endunix = 1622995200
-re =  int((endunix -int(now) )/86400)
+n = 0
+plusday = 0
+while True:
+    endunix = 1622995200 + n * 31536000
+    re =  int((endunix -int(now) )/86400)
+    if re < 0:
+        n = n + 1
+        plusday = plusday + leap_year(2020 + n)
+    else:
+        re = re + plusday
+        print("本届高三" + str(2021 + n) +"年高考")
+        break
+
 print('距离高考还有 '+str(re)+" 天")
 homework1 = ""
 homework2 = ""
